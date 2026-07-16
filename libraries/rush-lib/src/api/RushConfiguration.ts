@@ -258,6 +258,16 @@ export class RushConfiguration {
   public readonly isPnpm!: boolean;
 
   /**
+   * If true, the repository is using PNPM version 11.0.0 or newer as its package manager.
+   *
+   * @remarks
+   * pnpm 11 no longer reads the `pnpm` field of the root `package.json`: settings such as
+   * `overrides` and `patchedDependencies` must be written to `pnpm-workspace.yaml` instead.
+   * See https://github.com/microsoft/rushstack/issues/5837
+   */
+  public readonly isPnpm11OrNewer!: boolean;
+
+  /**
    * {@inheritdoc PackageManager}
    *
    * @privateremarks
@@ -705,6 +715,7 @@ export class RushConfiguration {
     const packageManagerFields: string[] = [];
 
     this.isPnpm = false;
+    this.isPnpm11OrNewer = false;
     if (rushConfigurationJson.npmVersion) {
       this.packageManager = 'npm';
       this.packageManagerOptions = this.npmOptions;
@@ -714,6 +725,7 @@ export class RushConfiguration {
     if (rushConfigurationJson.pnpmVersion) {
       this.packageManager = 'pnpm';
       this.isPnpm = true;
+      this.isPnpm11OrNewer = semver.gte(rushConfigurationJson.pnpmVersion, '11.0.0');
       this.packageManagerOptions = this.pnpmOptions;
       packageManagerFields.push('pnpmVersion');
     }

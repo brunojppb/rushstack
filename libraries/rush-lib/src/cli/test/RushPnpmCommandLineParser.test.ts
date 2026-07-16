@@ -19,7 +19,7 @@ const SUBSPACE_TEMP_FOLDER: string = '/repo/common/temp';
 
 function createPostExecuteParser(options: {
   commandName: string;
-  pnpmVersion: string;
+  isPnpm11OrNewer: boolean;
   globalPatchedDependencies: Record<string, string> | undefined;
   updateGlobalPatchedDependencies: jest.Mock;
   doRushUpdateAsync: jest.Mock;
@@ -27,7 +27,7 @@ function createPostExecuteParser(options: {
   const parser: RushPnpmCommandLineParser = Object.create(RushPnpmCommandLineParser.prototype);
   Object.assign(parser, {
     _commandName: options.commandName,
-    _rushConfiguration: { packageManagerToolVersion: options.pnpmVersion },
+    _rushConfiguration: { isPnpm11OrNewer: options.isPnpm11OrNewer },
     _terminal: { writeWarningLine: jest.fn(), writeErrorLine: jest.fn() },
     _doRushUpdateAsync: options.doRushUpdateAsync,
     _subspace: {
@@ -71,7 +71,7 @@ describe(`${RushPnpmCommandLineParser.name} patch-commit patchedDependencies syn
     const doRushUpdateAsync: jest.Mock = jest.fn();
     const parser: RushPnpmCommandLineParser = createPostExecuteParser({
       commandName: 'patch-commit',
-      pnpmVersion: '11.7.0',
+      isPnpm11OrNewer: true,
       globalPatchedDependencies: { 'left-pad@1.0.0': 'patches/left-pad@1.0.0.patch' },
       updateGlobalPatchedDependencies,
       doRushUpdateAsync
@@ -105,7 +105,7 @@ describe(`${RushPnpmCommandLineParser.name} patch-commit patchedDependencies syn
     const doRushUpdateAsync: jest.Mock = jest.fn();
     const parser: RushPnpmCommandLineParser = createPostExecuteParser({
       commandName: 'patch-commit',
-      pnpmVersion: '10.27.0',
+      isPnpm11OrNewer: false,
       globalPatchedDependencies: { 'left-pad@1.0.0': 'patches/left-pad@1.0.0.patch' },
       updateGlobalPatchedDependencies,
       doRushUpdateAsync

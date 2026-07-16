@@ -1422,6 +1422,7 @@ export class RushConfiguration {
     readonly gitVersionBumpCommitMessage: string | undefined;
     readonly hotfixChangeEnabled: boolean;
     readonly isPnpm: boolean;
+    readonly isPnpm11OrNewer: boolean;
     static loadFromConfigurationFile(rushJsonFilename: string): RushConfiguration;
     // (undocumented)
     static loadFromDefaultLocation(options?: ITryFindRushJsonLocationOptions): RushConfiguration;

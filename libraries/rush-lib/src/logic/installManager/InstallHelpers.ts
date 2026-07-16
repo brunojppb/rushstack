@@ -68,7 +68,7 @@ export class InstallHelpers {
       } = subspace.getPnpmOptions() || rushConfiguration.pnpmOptions;
 
       const pnpmVersion: string = rushConfiguration.packageManagerToolVersion;
-      const isPnpm11: boolean = semver.gte(pnpmVersion, '11.0.0');
+      const isPnpm11: boolean = rushConfiguration.isPnpm11OrNewer;
 
       let neverBuiltDependencies: ICommonPackageJsonPnpmSection['neverBuiltDependencies'];
       if (globalNeverBuiltDependencies) {

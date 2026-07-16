@@ -539,11 +539,9 @@ export class RushPnpmCommandLineParser {
         }
 
         const pnpmOptions: PnpmOptionsConfiguration | undefined = this._subspace.getPnpmOptions();
-        const pnpmVersion: string = this._rushConfiguration.packageManagerToolVersion;
-        const semver: typeof import('semver') = await import('semver');
 
         let newGlobalPatchedDependencies: Record<string, string> | undefined;
-        if (semver.gte(pnpmVersion, '11.0.0')) {
+        if (this._rushConfiguration.isPnpm11OrNewer) {
           // PNPM 11+ stores patchedDependencies in pnpm-workspace.yaml instead of the package.json "pnpm" field
           newGlobalPatchedDependencies = await PnpmWorkspaceFile.loadPatchedDependenciesAsync(
             `${subspaceTempFolder}/pnpm-workspace.yaml`

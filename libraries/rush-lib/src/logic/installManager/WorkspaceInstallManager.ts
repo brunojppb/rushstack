@@ -512,10 +512,7 @@ export class WorkspaceInstallManager extends BaseInstallManager {
     // For pnpm 11+, the following settings must be written to pnpm-workspace.yaml because pnpm 11
     // no longer reads the "pnpm" field of package.json (where Rush writes them for older pnpm).
     // See https://github.com/microsoft/rushstack/issues/5837
-    if (
-      this.rushConfiguration.rushConfigurationJson.pnpmVersion !== undefined &&
-      semver.gte(this.rushConfiguration.rushConfigurationJson.pnpmVersion, '11.0.0')
-    ) {
+    if (this.rushConfiguration.isPnpm11OrNewer) {
       const pnpmOptions: PnpmOptionsConfiguration =
         subspace.getPnpmOptions() || this.rushConfiguration.pnpmOptions;
       workspaceFile.overrides = pnpmOptions.globalOverrides;
